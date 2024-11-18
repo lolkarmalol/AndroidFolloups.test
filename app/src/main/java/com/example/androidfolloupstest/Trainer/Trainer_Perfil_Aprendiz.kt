@@ -1,4 +1,4 @@
-package com.example.androidfolloupstest.Superadmin
+package com.example.androidfolloupstest.Trainer
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androidfolloupstest.R
 
-class SuperAdmin_Perfil_Aprendiz : ComponentActivity() {
+class Trainer_Perfil_Aprendiz : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -51,162 +55,138 @@ class SuperAdmin_Perfil_Aprendiz : ComponentActivity() {
 
     @Composable
     fun HeaderSection() {
-        val context = LocalContext.current
-        var expanded by remember { mutableStateOf(false) }
-
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(16.dp)
+                .background(Color.White),
+            verticalAlignment = Alignment.Top
         ) {
-            // Logo SENA
             Image(
                 painter = painterResource(id = R.drawable.logo_sena),
-                contentDescription = "Logo SENA",
-                modifier = Modifier
-                    .size(70.dp)
-                    .clickable {
-                        context.startActivity(Intent(context, HomeSuperAdmin::class.java))
-                    }
+                contentDescription = "SENA Logo",
+                modifier = Modifier.size(70.dp)
             )
+
             Spacer(modifier = Modifier.width(10.dp))
 
-            // Logo Etapa Productiva
-            Image(
-                painter = painterResource(id = R.drawable.logo_etapaproductiva),
-                contentDescription = "Logo Etapa Productiva",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable {
-                        context.startActivity(Intent(context, HomeSuperAdmin::class.java))
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "Etapa Productiva Logo",
+                        modifier = Modifier.size(40.dp)
+                    )
+                    Column {
+                        Text(
+                            "Etapa",
+                            fontSize = 12.sp,
+                            color = Color(0xFF009E00),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            "Productiva",
+                            fontSize = 12.sp,
+                            color = Color(0xFF009E00),
+                            fontWeight = FontWeight.Bold
+                        )
                     }
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-
-            // Textos
-            Column(
-                modifier = Modifier.clickable {
-                    context.startActivity(Intent(context, HomeSuperAdmin::class.java))
                 }
-            ) {
-                androidx.compose.material.Text(
-                    "Etapa\nProductiva",
-                    fontSize = 13.sp,
-                    color = Color(0xFF009E00),
-                    modifier = Modifier
-                        .padding(top = 6.dp)
-                        .offset(x = (-5).dp)
-                )
                 Spacer(modifier = Modifier.height(15.dp))
-                androidx.compose.material.Text(
-                    "Centro de Comercio y Servicios",
-                    fontSize = 14.sp,
-                    color = Color(0xFF009E00),
-                    modifier = Modifier.offset(x = (-30).dp)
-                )
+                Text("Centro de Comercio y Servicios", fontSize = 14.sp, color = Color(0xFF009E00))
             }
 
-            Spacer(modifier = Modifier.weight(1f)) // Para empujar el icono del usuario a la derecha
+            Spacer(modifier = Modifier.weight(1f))
 
-            // Icono de usuario
-            Box(
+            UserIconMenu()
+
+        }
+    }
+    @Composable
+    fun UserIconMenu() {
+        var expanded by remember { mutableStateOf(false) }
+        val context = LocalContext.current
+
+        // Datos de usuario (reemplazar por datos reales si es necesario)
+        val userName = "Laura Orozco" // Nombre del usuario
+        val userRole = "Instructor" // Rol del usuario
+
+        Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
+            Image(
+                painter = painterResource(id = R.drawable.mujer),
+                contentDescription = "User Icon",
                 modifier = Modifier
                     .size(45.dp)
-                    .clickable { expanded = !expanded } // Cambia el estado al hacer clic
+                    .clickable { expanded = true } // Abre el menú al hacer clic
+            )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false } // Cierra el menú al hacer clic fuera
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.user_icon),
-                    contentDescription = "User Icon",
-                    modifier = Modifier.size(45.dp)
-                )
-
-                // Menú desplegable
-                androidx.compose.material.DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                    modifier = Modifier.width(240.dp) // Ajusta el ancho del menú según sea necesario
+                // Añadir nombre y rol en la parte superior del menú
+                Column(
+                    modifier = Modifier.padding(16.dp) // Espaciado en la cabecera del menú
                 ) {
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, SuperAdmin_Perfil_SuperAdmin::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Ver perfil")
-                    }
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, HomeSuperAdmin::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Inicio")
-                    }
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, SuperAdmin_Configuraciones::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Configuración")
-                    }
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, "Permisos"::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Permisos")
-                    }
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, SuperAdmin_AdministradoresActivity::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Administradores")
-                    }
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, SuperAdmin_InstructorActivity::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Instructores")
-                    }
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        context.startActivity(Intent(context, SuperAdmin_ApprenticeActivity::class.java))
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Aprendices")
-                    }
-
-                    androidx.compose.material.DropdownMenuItem(onClick = {
-                        // Implementar lógica de cierre de sesión
-                        expanded = false
-                    }) {
-                        androidx.compose.material.Text("Cerrar sesión")
-                    }
+                    Text(text = userName, style = MaterialTheme.typography.titleMedium)
+                    Text(text = userRole, style = MaterialTheme.typography.bodyMedium)
                 }
+
+                // Elementos del menú
+                DropdownMenuItem(
+                    text = { Text("Ver perfil") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Perfil_instructor::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Aprendices") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Lista_Aprendiz::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Configuración") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Configuracion::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Cerrar sesión") },
+                    onClick = {
+                        expanded = false
+                        // Acción para cerrar sesión
+                    }
+                )
             }
         }
     }
 
     @Composable
     fun NotificationBar() {
-        val context = LocalContext.current // Obtener el contexto local
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .background(Color(0xFF009E00)),
+                .background(Color(0xFF009E00)), // Verde
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
             Image(
-                painter = painterResource(id = R.drawable.notificaciones_icon),
+                painter = painterResource(id = R.drawable.notificaciones),
                 contentDescription = "Notification Icon",
                 modifier = Modifier
                     .size(60.dp)
                     .clickable {
-                        // Al hacer clic en el icono de notificaciones, iniciar NotificationActivity
-                        context.startActivity(Intent(context, SuperAdmin_Notificaciones::class.java))
-                    },
-                colorFilter = ColorFilter.tint(Color.White) // Cambia el color a blanco
+                        // Acción al hacer clic en la imagen (Ej: navegar a otra actividad)
+                        startActivity(Intent(this@Trainer_Perfil_Aprendiz, Trainer_Notificaciones::class.java)) },
+                colorFilter = ColorFilter.tint(Color.White)
+
             )
         }
     }
-
     @Composable
     fun MainContent() {
         Column(
@@ -223,7 +203,7 @@ class SuperAdmin_Perfil_Aprendiz : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.aprendiz),
+                    painter = painterResource(id = R.drawable.aprendiz_icono_tra),
                     contentDescription = "Avatar",
                     modifier = Modifier
                         .size(100.dp)
@@ -249,10 +229,19 @@ class SuperAdmin_Perfil_Aprendiz : ComponentActivity() {
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly // Espacio entre los botones
             ) {
+                ActionButton(iconRes = R.drawable.bitacora, text = "Bitácora") {
+                    // Acción para navegar a BitácoraActivity
+                    startActivity(Intent(this@Trainer_Perfil_Aprendiz, Trainer_Bitacora::class.java))
+                }
 
+                ActionButton(iconRes = R.drawable.visita, text = "Visita") {
+                    // Acción para navegar a VisitaActivity
+                    startActivity(Intent(this@Trainer_Perfil_Aprendiz, Trainer_visita::class.java))
+                }
             }
 
             // Dropdown de estado
+            StatusDropdown()
         }
     }
 
@@ -289,10 +278,40 @@ class SuperAdmin_Perfil_Aprendiz : ComponentActivity() {
         }
     }
 
+    @Composable
+    fun StatusDropdown() {
+        var selectedOption by remember { mutableStateOf("Selecciona Opción") }
+        val options = listOf("ACTIVO", "NOVEDAD", "FINALIZADA")
+        var expanded by remember { mutableStateOf(false) }
 
-    private fun DropdownMenuItem(onClick: () -> Unit, interactionSource: @Composable () -> Unit) {
-        TODO("Not yet implemented")
+        Surface(modifier = Modifier.fillMaxWidth()) {
+            Box(modifier = Modifier.wrapContentSize(Alignment.TopStart)) {
+                Text(
+                    text = selectedOption,
+                    modifier = Modifier
+                        .background(Color.LightGray)
+                        .padding(12.dp)
+                        .fillMaxWidth()
+                        .clickable { expanded = true }
+                )
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            onClick = {
+                                selectedOption = option
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
     }
+
 
     @Preview(showBackground = true)
     @Composable

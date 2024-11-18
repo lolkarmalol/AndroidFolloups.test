@@ -140,12 +140,7 @@ class MainActivity : ComponentActivity() {
                 }) {
                     Text("Aprendices")
                 }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    context.startActivity(Intent(context, GraphicActivity::class.java))
-                }) {
-                    Text("Gráficas")
-                }
+
                 DropdownMenuItem(onClick = {
                     expanded = false
                     context.startActivity(Intent(context, TemplateActivity::class.java))
@@ -209,10 +204,7 @@ class MainActivity : ComponentActivity() {
                     Log.d("MainActivity", "Aprendices button clicked")
                     context.startActivity(Intent(context, ApprenticeActivity::class.java))
                 }
-                ActionButton("Gráficas", R.drawable.graficas) {
-                    Log.d("MainActivity", "Gráficas button clicked")
-                    context.startActivity(Intent(context, GraphicActivity::class.java))
-                }
+
                 PlantillasDropdownButton()
             }
         }

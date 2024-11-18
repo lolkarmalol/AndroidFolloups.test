@@ -2,12 +2,17 @@ package com.example.androidfolloupstest
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.androidfolloupstest.Aprendice.HomeScreen
 import com.example.androidfolloupstest.Aprendice.RegistroVisitaScreen
+import java.lang.reflect.Modifier
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

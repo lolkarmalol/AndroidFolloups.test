@@ -1,9 +1,7 @@
-package com.example.androidfolloupstest.Superadmin
-
+package com.example.androidfolloupstest.Trainer
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -11,20 +9,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -45,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androidfolloupstest.R
 
-class SuperAdmin_Notificaciones: ComponentActivity() {
+class Trainer_Notificaciones: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -68,94 +70,137 @@ class SuperAdmin_Notificaciones: ComponentActivity() {
             EmailList()
         }
     }
+
     @Composable
     fun HeaderSection() {
-        val context = LocalContext.current
-
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(16.dp)
+                .background(Color.White),
+            verticalAlignment = Alignment.Top
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_sena),
-                contentDescription = "Logo SENA",
-                modifier = Modifier
-                    .size(70.dp)
-                    .clickable {
-                        val intent = Intent(context, HomeSuperAdmin::class.java)
-                        context.startActivity(intent)
-                    }
+                contentDescription = "SENA Logo",
+                modifier = Modifier.size(70.dp)
             )
+
             Spacer(modifier = Modifier.width(10.dp))
-            Image(
-                painter = painterResource(id = R.drawable.logo_etapaproductiva),
-                contentDescription = "Logo Etapa Productiva",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable {
-                        val intent = Intent(context, HomeSuperAdmin::class.java)
-                        context.startActivity(intent)
+
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_etapaproductiva),
+                        contentDescription = "Etapa Productiva Logo",
+                        modifier = Modifier.size(40.dp)
+                    )
+                    Column {
+                        Text(
+                            "Etapa",
+                            fontSize = 12.sp,
+                            color = Color(0xFF009E00),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            "Productiva",
+                            fontSize = 12.sp,
+                            color = Color(0xFF009E00),
+                            fontWeight = FontWeight.Bold
+                        )
                     }
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(
-                modifier = Modifier.clickable {
-                    val intent = Intent(context, HomeSuperAdmin::class.java)
-                    context.startActivity(intent)
                 }
-            ) {
-                androidx.compose.material.Text(
-                    "Etapa\nProductiva",
-                    fontSize = 13.sp,
-                    color = Color(0xFF009E00),
-                    modifier = Modifier
-                        .padding(top = 6.dp)
-                        .offset(x = (-5).dp)
-                )
                 Spacer(modifier = Modifier.height(15.dp))
-                androidx.compose.material.Text(
-                    "Centro de Comercio y Servicios",
-                    fontSize = 14.sp,
-                    color = Color(0xFF009E00),
-                    modifier = Modifier.offset(x = (-30).dp)
-                )
+                Text("Centro de Comercio y Servicios", fontSize = 14.sp, color = Color(0xFF009E00))
             }
+
             Spacer(modifier = Modifier.weight(1f))
+
+            UserIconMenu()
+
+        }
+    }
+    @Composable
+    fun UserIconMenu() {
+        var expanded by remember { mutableStateOf(false) }
+        val context = LocalContext.current
+
+        // Datos de usuario (reemplazar por datos reales si es necesario)
+        val userName = "Laura Orozco" // Nombre del usuario
+        val userRole = "Instructor" // Rol del usuario
+
+        Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
             Image(
                 painter = painterResource(id = R.drawable.user_icon),
                 contentDescription = "User Icon",
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier
+                    .size(45.dp)
+                    .clickable { expanded = true } // Abre el menú al hacer clic
             )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false } // Cierra el menú al hacer clic fuera
+            ) {
+                // Añadir nombre y rol en la parte superior del menú
+                Column(
+                    modifier = Modifier.padding(16.dp) // Espaciado en la cabecera del menú
+                ) {
+                    Text(text = userName, style = MaterialTheme.typography.titleMedium)
+                    Text(text = userRole, style = MaterialTheme.typography.bodyMedium)
+                }
+
+                // Elementos del menú
+                DropdownMenuItem(
+                    text = { Text("Ver perfil") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Perfil_instructor::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Aprendices") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Perfil_Aprendiz::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Configuración") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Configuracion::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Cerrar sesión") },
+                    onClick = {
+                        expanded = false
+                        // Acción para cerrar sesión
+                    }
+                )
+            }
         }
     }
 
     @Composable
     fun NotificationBar() {
-        val context = LocalContext.current // Obtener el contexto local
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
-                .background(Color(0xFF009E00)),
+                .background(Color(0xFF009E00)), // Verde
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
             Image(
                 painter = painterResource(id = R.drawable.notificaciones_icon),
                 contentDescription = "Notification Icon",
-                modifier = Modifier
-                    .size(60.dp)
-                    .clickable {
-                        // Al hacer clic en el icono de notificaciones, iniciar NotificationActivity
-                        context.startActivity(Intent(context, SuperAdmin_Notificaciones::class.java))
-                    },
-                colorFilter = ColorFilter.tint(Color.White) // Cambia el color a blanco
+                modifier = Modifier.size(60.dp),
+                colorFilter = ColorFilter.tint(Color.White)
             )
         }
     }
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -195,7 +240,7 @@ class SuperAdmin_Notificaciones: ComponentActivity() {
             // Botón de redactar
             IconButton(
                 onClick = { // Acción al hacer clic en la imagen (Ej: navegar a otra actividad)
-                    startActivity(Intent(this@SuperAdmin_Notificaciones, SuperAdmin_Redactar::class.java)) },
+                    startActivity(Intent(this@Trainer_Notificaciones, Trainer_Redactar::class.java)) },
                 modifier = Modifier.size(25.dp) // Tamaño del icono
             ) {
                 Image(
@@ -242,7 +287,7 @@ class SuperAdmin_Notificaciones: ComponentActivity() {
                     shape = RoundedCornerShape(2.dp) // Esquinas ligeramente redondeadas
                 )
                 .clickable {  // Acción al hacer clic en la imagen (Ej: navegar a otra actividad)
-                    startActivity(Intent(this@SuperAdmin_Notificaciones, Email::class.java)) }
+                    startActivity(Intent(this@Trainer_Notificaciones, Trainer_Email::class.java)) }
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -271,5 +316,7 @@ class SuperAdmin_Notificaciones: ComponentActivity() {
         MainScreen()
     }
 }
+
+
 
 

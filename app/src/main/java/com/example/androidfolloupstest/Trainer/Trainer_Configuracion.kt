@@ -1,4 +1,4 @@
-package com.example.androidfolloupstest.Administrador
+package com.example.androidfolloupstest.Trainer
 
 import android.content.Intent
 import android.os.Build
@@ -8,35 +8,29 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,23 +42,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.ui.text.style.TextAlign
 import com.example.androidfolloupstest.R
 
 
-class ConfiguracionActivity : ComponentActivity() {
+class Trainer_Configuracion : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -83,7 +70,6 @@ class ConfiguracionActivity : ComponentActivity() {
         ) {
             HeaderSection()
             NotificationBar()
-
             SettingsScreen()
 
         }
@@ -92,57 +78,59 @@ class ConfiguracionActivity : ComponentActivity() {
     @Composable
     fun HeaderSection() {
         Row(
-            modifier = Modifier.padding(0.dp),
+            modifier = Modifier
+                .padding(16.dp)
+                .background(Color.White),
             verticalAlignment = Alignment.Top
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_sena),
-                contentDescription = "Logo SENA",
+                contentDescription = "SENA Logo",
                 modifier = Modifier.size(70.dp)
             )
+
             Spacer(modifier = Modifier.width(10.dp))
 
-            Image(
-                painter = painterResource(id = R.drawable.logo_etapaproductiva),
-                contentDescription = "Logo Etapa Productiva",
-                modifier = Modifier.size(40.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-
             Column {
-                androidx.compose.material.Text(
-                    "Etapa\nProductiva",
-                    fontSize = 13.sp,
-                    color = Color(0xFF009E00),
-                    modifier = Modifier
-                        .padding(top = 6.dp)
-                        .offset(x = (-5).dp)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_etapaproductiva),
+                        contentDescription = "Etapa Productiva Logo",
+                        modifier = Modifier.size(40.dp)
+                    )
+                    Column {
+                        Text(
+                            "Etapa",
+                            fontSize = 12.sp,
+                            color = Color(0xFF009E00),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            "Productiva",
+                            fontSize = 12.sp,
+                            color = Color(0xFF009E00),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
                 Spacer(modifier = Modifier.height(15.dp))
-                androidx.compose.material.Text(
-                    "Centro de Comercio y Servicios",
-                    fontSize = 14.sp,
-                    color = Color(0xFF009E00),
-                    modifier = Modifier.offset(x = (-30).dp)
-                )
+                Text("Centro de Comercio y Servicios", fontSize = 14.sp, color = Color(0xFF009E00))
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            UserIcon()
+            UserIconMenu()
+
         }
     }
-
     @Composable
-    fun UserIcon() {
+    fun UserIconMenu() {
         var expanded by remember { mutableStateOf(false) }
-
-        // Obtén el contexto actual
         val context = LocalContext.current
 
-        // Reemplaza estos valores con los datos reales
-        val userName = "Paula Valencia" // Nombre del usuario
-        val userRole = "Administrador" // Rol del usuario
+        // Datos de usuario (reemplazar por datos reales si es necesario)
+        val userName = "Laura Orozco" // Nombre del usuario
+        val userRole = "Instructor" // Rol del usuario
 
         Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
             Image(
@@ -150,103 +138,71 @@ class ConfiguracionActivity : ComponentActivity() {
                 contentDescription = "User Icon",
                 modifier = Modifier
                     .size(45.dp)
-                    .clickable { expanded = true }
+                    .clickable { expanded = true } // Abre el menú al hacer clic
             )
 
             DropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false } // Cierra el menú al hacer clic fuera
             ) {
                 // Añadir nombre y rol en la parte superior del menú
                 Column(
-                    modifier = Modifier.padding(16.dp) // Espaciado
+                    modifier = Modifier.padding(16.dp) // Espaciado en la cabecera del menú
                 ) {
-                    androidx.compose.material.Text(
-                        text = userName,
-                        style = androidx.compose.material.MaterialTheme.typography.h6
-                    )
-                    androidx.compose.material.Text(
-                        text = userRole,
-                        style = androidx.compose.material.MaterialTheme.typography.body2
-                    )
+                    Text(text = userName, style = MaterialTheme.typography.titleMedium)
+                    Text(text = userRole, style = MaterialTheme.typography.bodyMedium)
                 }
 
                 // Elementos del menú
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    // Navegar a la actividad de perfil
-                    context.startActivity(Intent(context, PerfileActivity::class.java))
-                }) {
-                    androidx.compose.material.Text("Ver perfil")
-                }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    context.startActivity(Intent(context, InstructorActivity::class.java))
-                }) {
-                    androidx.compose.material.Text("Instructores")
-                }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    context.startActivity(Intent(context, ApprenticeActivity::class.java))
-                }) {
-                    androidx.compose.material.Text("Aprendices")
-                }
-
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    context.startActivity(Intent(context, TemplateActivity::class.java))
-                }) {
-                    androidx.compose.material.Text("Plantillas")
-                }
-
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    // Acción para configuración
-                }) {
-                    androidx.compose.material.Text("Configuración")
-                }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    // Acción para cerrar sesión
-                }) {
-                    androidx.compose.material.Text("Cerrar sesión")
-                }
+                DropdownMenuItem(
+                    text = { Text("Ver perfil") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Perfil_instructor::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Aprendices") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Lista_Aprendiz::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Configuración") },
+                    onClick = {
+                        expanded = false
+                        context.startActivity(Intent(context, Trainer_Configuracion::class.java))
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text("Cerrar sesión") },
+                    onClick = {
+                        expanded = false
+                        // Acción para cerrar sesión
+                    }
+                )
             }
         }
     }
-
-
     @Composable
     fun NotificationBar() {
-        // Obtén el contexto actual
-        val context = LocalContext.current
-
         Row(
             modifier = Modifier
-                .fillMaxWidth() // Ocupa solo el ancho máximo, no el tamaño completo
+                .fillMaxWidth()
                 .height(64.dp)
-                .background(Color(0xFF009E00)), // Fondo verde
+                .background(Color(0xFF009E00)), // Verde
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
             Image(
                 painter = painterResource(id = R.drawable.notificaciones_icon),
                 contentDescription = "Notification Icon",
-                modifier = Modifier
-                    .size(60.dp)
-                    .clickable {
-                        // Navega a la actividad NotificacionesActivity
-                        val intent = Intent(context, NotificacionesActivity::class.java)
-                        context.startActivity(intent) // Inicia la nueva actividad
-                    },
+                modifier = Modifier.size(60.dp),
                 colorFilter = ColorFilter.tint(Color.White)
             )
         }
     }
-
-
-
-
     @Composable
     fun SettingsScreen() {
         // Variables para almacenar el texto de los campos
@@ -354,9 +310,11 @@ class ConfiguracionActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
         MainScreen()
     }
+
 }

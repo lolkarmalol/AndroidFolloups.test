@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.androidfolloupstest.HomeSuperAdmin
 import com.example.androidfolloupstest.R
 
 class SuperAdmin_Perfil_Administradores : ComponentActivity() { // Nombre de la clase actualizado

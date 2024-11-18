@@ -154,12 +154,7 @@ class AprendizPerfilActivity : ComponentActivity() {
                 }) {
                     Text("Aprendices")
                 }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    context.startActivity(Intent(context, GraphicActivity::class.java))
-                }) {
-                    Text("Gráficas")
-                }
+
                 DropdownMenuItem(onClick = {
                     expanded = false
                     context.startActivity(Intent(context, TemplateActivity::class.java))
