@@ -1,0 +1,296 @@
+package com.example.androidfolloupstest.Superadmin
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.androidfolloupstest.HomeSuperAdmin
+import com.example.androidfolloupstest.R
+
+class SuperAdmin_InstructorActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    InstructorScreen()
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun InstructorScreen() {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HeaderSection()
+            Spacer(modifier = Modifier.height(8.dp))
+            NotificationBar()
+            Spacer(modifier = Modifier.height(16.dp))
+            SearchBar()
+            Spacer(modifier = Modifier.height(16.dp))
+            InstructorGrid()
+        }
+    }
+
+    @Composable
+    fun HeaderSection() {
+        val context = LocalContext.current
+        var expanded by remember { mutableStateOf(false) }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Logo SENA
+            Image(
+                painter = painterResource(id = R.drawable.logo_sena),
+                contentDescription = "Logo SENA",
+                modifier = Modifier
+                    .size(70.dp)
+                    .clickable {
+                        context.startActivity(Intent(context, HomeSuperAdmin::class.java))
+                    }
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+
+            // Logo Etapa Productiva
+            Image(
+                painter = painterResource(id = R.drawable.logo_etapaproductiva),
+                contentDescription = "Logo Etapa Productiva",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable {
+                        context.startActivity(Intent(context, HomeSuperAdmin::class.java))
+                    }
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Textos
+            Column(
+                modifier = Modifier.clickable {
+                    context.startActivity(Intent(context, HomeSuperAdmin::class.java))
+                }
+            ) {
+                Text(
+                    "Etapa\nProductiva",
+                    fontSize = 13.sp,
+                    color = Color(0xFF009E00),
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .offset(x = (-5).dp)
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    "Centro de Comercio y Servicios",
+                    fontSize = 14.sp,
+                    color = Color(0xFF009E00),
+                    modifier = Modifier.offset(x = (-30).dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f)) // Para empujar el icono del usuario a la derecha
+
+            // Icono de usuario
+            Box(
+                modifier = Modifier
+                    .size(45.dp)
+                    .clickable { expanded = !expanded } // Cambia el estado al hacer clic
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.user_icon),
+                    contentDescription = "User Icon",
+                    modifier = Modifier.size(45.dp)
+                )
+
+                // Menú desplegable
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.width(240.dp) // Ajusta el ancho del menú según sea necesario
+                ) {
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, SuperAdmin_Perfil_SuperAdmin::class.java))
+                        expanded = false
+                    }) {
+                        Text("Ver perfil")
+                    }
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, HomeSuperAdmin::class.java))
+                        expanded = false
+                    }) {
+                        Text("Inicio")
+                    }
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, SuperAdmin_Configuraciones ::class.java))
+                        expanded = false
+                    }) {
+                        Text("Configuración")
+                    }
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, "Permisos"::class.java))
+                        expanded = false
+                    }) {
+                        Text("Permisos")
+                    }
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, SuperAdmin_AdministradoresActivity::class.java))
+                        expanded = false
+                    }) {
+                        Text("Administradores")
+                    }
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, SuperAdmin_InstructorActivity::class.java))
+                        expanded = false
+                    }) {
+                        Text("Instructores")
+                    }
+                    DropdownMenuItem(onClick = {
+                        context.startActivity(Intent(context, SuperAdmin_ApprenticeActivity::class.java))
+                        expanded = false
+                    }) {
+                        Text("Aprendices")
+                    }
+
+                    DropdownMenuItem(onClick = {
+                        // Implementar lógica de cierre de sesión
+                        expanded = false
+                    }) {
+                        Text("Cerrar sesión")
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun NotificationBar() {
+        val context = LocalContext.current
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+                .background(Color(0xFF009E00)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.notificaciones_icon),
+                contentDescription = "Notification Icon",
+                modifier = Modifier
+                    .size(60.dp)
+                    .clickable {
+                        context.startActivity(Intent(context, SuperAdmin_Notificaciones::class.java))
+                    },
+                colorFilter = ColorFilter.tint(Color.White)
+            )
+        }
+    }
+
+    @Composable
+    fun SearchBar() {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            TextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp)
+                    .padding(horizontal = 2.dp),
+                placeholder = { Text(text = "Buscar...") }
+            )
+            Spacer(modifier = Modifier.width(2.dp))
+            IconButton(onClick = {}, modifier = Modifier.size(36.dp)) {
+                Icon(
+                    painter = painterResource(id = R.drawable.mas),
+                    contentDescription = "Agregar",
+                    tint = Color(0xFF009E00),
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun InstructorGrid() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+        ) {
+            repeat(4) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    repeat(2) {
+                        InstructorCard(modifier = Modifier.size(170.dp))
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun InstructorCard(modifier: Modifier = Modifier) {
+        val context = LocalContext.current
+        Column(
+            modifier = modifier
+                .padding(8.dp)
+                .border(2.dp, Color(0xFF009E00), shape = MaterialTheme.shapes.medium)
+                .padding(14.dp)
+                .clickable {
+                    context.startActivity(Intent(context, SuperAdmin_Perfil_Instructor::class.java))
+                },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.instructor),
+                contentDescription = "Instructor Icon",
+                modifier = Modifier.size(60.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Nombre Completo", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Cédula", fontSize = 10.sp)
+            Text(text = "Sede", fontSize = 10.sp)
+            Text(text = "Aprendices: 0", fontSize = 10.sp)
+        }
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+            InstructorScreen()
+
+    }
+

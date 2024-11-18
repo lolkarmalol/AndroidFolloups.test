@@ -49,48 +49,54 @@ android {
     }
 }
 
+
+
 dependencies {
-    implementation ("androidx.compose.material3:material3:1.0.0") //  la última versión disponible
-    implementation ("com.google.accompanist:accompanist-pager:0.28.0") //  la última versión disponible
-    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Opcional
-    implementation ("androidx.navigation:navigation-compose:2.6.0")
-    implementation ("com.google.accompanist:accompanist-pager:0.25.1") // Asegúrate de tener la versión correcta
-    implementation ("androidx.compose.foundation:foundation:1.3.0") // Para LazyColumn y otros componentes
-    implementation ("androidx.compose.material3:material3:1.0.0") // Para los componentes de Material3
-    implementation ("androidx.navigation:navigation-compose:2.6.0")
-
-// Compose UI
-    implementation("androidx.compose.ui:ui:1.4.0")
-    implementation("androidx.compose.material:material:1.4.0")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
-
-    // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
-
-    // Navigation Component for Compose
-    implementation("androidx.navigation:navigation-compose:2.5.0")
-
-    // Coil for image loading
-    implementation("io.coil-kt:coil-compose:1.3.0")
-
-    // Carousel or Pager for Compose (Accompanist Library)
-    implementation("com.google.accompanist:accompanist-pager:0.24.0-alpha")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.24.0-alpha")
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    // Compose BOM (Bill of Materials)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Compose UI and related libraries
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.activity:activity-compose:1.6.0")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("io.coil-kt:coil-compose:1.3.0")
+
+    // Lifecycle components
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
+
+    // Accompanist libraries
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
+    // MPAndroidChart
+    implementation("com.github.PhilJay:MPAndroidChart:3.1.0") // Corrected version
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // AndroidX Core
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+
 }
