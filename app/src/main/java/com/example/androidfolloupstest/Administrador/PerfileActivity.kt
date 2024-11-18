@@ -33,17 +33,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.etapaproductiva.ui.theme.EtapaProductivaTheme
+import com.example.androidfolloupstest.R
 
 class PerfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            EtapaProductivaTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "perfil") {
                     composable("perfil") { PerfilScreen(navController) }
-                }
+
             }
         }
     }
@@ -412,8 +411,7 @@ class PerfileActivity : ComponentActivity() {
     @Preview(showBackground = true)
     @Composable
     fun DefaultPreview() {
-        EtapaProductivaTheme {
             PerfilScreen(rememberNavController())
-        }
+
     }
 }
