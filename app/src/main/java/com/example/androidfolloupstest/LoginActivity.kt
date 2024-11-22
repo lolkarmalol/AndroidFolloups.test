@@ -174,6 +174,7 @@ fun LoginScreen(paddingValues: PaddingValues) {
 fun LoginHeader() {
     Row(
         modifier = Modifier.padding(10.dp),
+
         verticalAlignment = Alignment.Top
     ) {
         Image(

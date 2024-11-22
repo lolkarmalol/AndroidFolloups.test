@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"/>
+
         <!--Superadmin-->
         <activity android:name=".Superadmin.SuperAdmin_AdministradoresActivity" />
         <activity android:name=".Superadmin.SuperAdmin_InstructorActivity"/>
