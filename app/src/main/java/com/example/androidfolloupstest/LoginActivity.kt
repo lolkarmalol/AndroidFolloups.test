@@ -26,7 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.navigation.NavController
+import androidx.test.core.app.ApplicationProvider
+import com.example.androidfolloupstest.network.ApiClient
+import com.example.androidfolloupstest.network.LoginRequest
 import com.example.androidfolloupstest.ui.theme.GreenTheme
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,10 +41,7 @@ class LoginActivity : ComponentActivity() {
             GreenTheme {
                 Scaffold(
                     topBar = { LoginHeader() },
-                     // Barra verde en la parte inferior
-                    content = { paddingValues ->
-                        LoginScreen(paddingValues)
-                    }
+                    content = { paddingValues -> LoginScreen(paddingValues) }
                 )
             }
         }
@@ -50,6 +53,10 @@ fun LoginScreen(paddingValues: PaddingValues) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -58,16 +65,12 @@ fun LoginScreen(paddingValues: PaddingValues) {
     ) {
         Spacer(modifier = Modifier.height(5.dp))
 
-        // Barra verde debajo del header
-        Navigation()  // Barra verde ubicada debajo del LoginHeader
+        Navigation()
 
-         // Espacio entre la barra verde y el contenido del login
-
-        // Welcome text with image
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)  // Adjusted height to accommodate image
+                .height(250.dp)
                 .background(Color.White, shape = RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp)),
             contentAlignment = Alignment.Center
         ) {
@@ -75,36 +78,15 @@ fun LoginScreen(paddingValues: PaddingValues) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 0.dp)
             ) {
-                // Image on the left side
-                Image(
-                    painter = painterResource(R.drawable.img),
-                    contentDescription = "Carusel Image",
-                    modifier = Modifier.size(230.dp)
-                )
-
-                // Column with text on the right side
+                Image(painter = painterResource(R.drawable.img), contentDescription = "Carusel Image", modifier = Modifier.size(230.dp))
                 Spacer(modifier = Modifier.width(10.dp))
-
-                Column(
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = "ETAPA",
-                        color = Color(0xFF009E00),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "PRODUCTIVA",
-                        color = Color(0xFF003366),
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(text = "ETAPA", color = Color(0xFF009E00), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(text = "PRODUCTIVA", color = Color(0xFF003366), fontSize = 22.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
 
-        // Login form
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -122,47 +104,42 @@ fun LoginScreen(paddingValues: PaddingValues) {
                 Text(
                     text = "USUARIO",
                     style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF003366)),
-                    modifier = Modifier.align(Alignment.CenterHorizontally) // Centered text
-                        .padding(bottom = 20.dp)
+                    modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 20.dp)
                 )
 
-                // Email input
-                InputField(
-                    value = email,
-                    onValueChange = { email = it },
-                    label = "Correo electrónico",
-                    icon = painterResource(R.drawable.aprendiz)
-                )
+                InputField(value = email, onValueChange = { email = it }, label = "Correo electrónico", icon = painterResource(R.drawable.aprendiz))
+                InputField(value = password, onValueChange = { password = it }, label = "Contraseña", icon = painterResource(R.drawable.contra), isPassword = true, showPassword = showPassword, onPasswordVisibilityChanged = { showPassword = it })
 
-                // Password input
-                InputField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = "Contraseña",
-                    icon = painterResource(R.drawable.contra), // Cambié el ícono a uno adecuado para contraseñas
-                    isPassword = true,
-                    showPassword = showPassword,
-                    onPasswordVisibilityChanged = { showPassword = it }
-                )
+                if (errorMessage.isNotEmpty()) {
+                    Text(text = errorMessage, color = Color.Red, modifier = Modifier.padding(top = 8.dp))
+                }
 
-                // Login button
                 Button(
-                    onClick = { /* Handle login action */ },
+                    onClick = {
+                        isLoading = true
+                        coroutineScope.launch {
+                            val response = ApiClient.authService.login(LoginRequest(email, password))
+                            if (response.isSuccessful) {
+                                val token = response.body()?.token
+                                token?.let { saveAuthToken(ApplicationProvider.getApplicationContext(), it) }
+                                isLoading = false
+                            } else {
+                                errorMessage = "Credenciales incorrectas"
+                                isLoading = false
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 20.dp)
                         .height(50.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF009E00))
                 ) {
-                    Text(text = "Iniciar Sesión", color = Color.White)
+                    Text(text = if (isLoading) "Cargando..." else "Iniciar Sesión", color = Color.White)
                 }
 
-                // Forgot password link
                 Spacer(modifier = Modifier.height(20.dp))
-                TextButton(
-                    onClick = { /* Navigate to Forgot password screen */ },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                ) {
+                TextButton(onClick = { /* Navegar a la pantalla de "Olvidé mi contraseña" */ }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
                     Text(text = "¿Olvidaste tu contraseña?", color = Color(0xFF003366))
                 }
             }
@@ -172,41 +149,16 @@ fun LoginScreen(paddingValues: PaddingValues) {
 
 @Composable
 fun LoginHeader() {
-    Row(
-        modifier = Modifier.padding(10.dp),
-
-        verticalAlignment = Alignment.Top
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo_sena),
-            contentDescription = "Logo SENA",
-            modifier = Modifier.size(70.dp)
-        )
+    Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.Top) {
+        Image(painter = painterResource(id = R.drawable.logo_sena), contentDescription = "Logo SENA", modifier = Modifier.size(70.dp))
         Spacer(modifier = Modifier.width(10.dp))
-
-        Image(
-            painter = painterResource(id = R.drawable.logo_etapaproductiva),
-            contentDescription = "Logo Etapa Productiva",
-            modifier = Modifier.size(40.dp)
-        )
+        Image(painter = painterResource(id = R.drawable.logo_etapaproductiva), contentDescription = "Logo Etapa Productiva", modifier = Modifier.size(40.dp))
         Spacer(modifier = Modifier.width(8.dp))
 
         Column {
-            Text(
-                "Etapa\nProductiva",
-                fontSize = 13.sp,
-                color = Color(0xFF009E00),
-                modifier = Modifier
-                    .padding(top = 6.dp)
-                    .offset(x = (-5).dp)
-            )
+            Text("Etapa\nProductiva", fontSize = 13.sp, color = Color(0xFF009E00), modifier = Modifier.padding(top = 6.dp).offset(x = (-5).dp))
             Spacer(modifier = Modifier.height(15.dp))
-            Text(
-                "Centro de Comercio y Servicios",
-                fontSize = 14.sp,
-                color = Color(0xFF009E00),
-                modifier = Modifier.offset(x = (-30).dp)
-            )
+            Text("Centro de Comercio y Servicios", fontSize = 14.sp, color = Color(0xFF009E00), modifier = Modifier.offset(x = (-30).dp))
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -217,9 +169,9 @@ fun LoginHeader() {
 fun Navigation() {
     Box(
         modifier = Modifier
-            .fillMaxWidth()  // Asegura que ocupe todo el ancho de la pantalla
-            .height(45.dp)  // Aumenta la altura para que sea visible
-            .background(Color(0xFF009E00))  // Color de la barra verde
+            .fillMaxWidth()
+            .height(45.dp)
+            .background(Color(0xFF009E00))
     )
 }
 
@@ -241,19 +193,14 @@ fun InputField(
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = icon,
-                contentDescription = label,
-                modifier = Modifier.size(22.dp)
-            )
+            Image(painter = icon, contentDescription = label, modifier = Modifier.size(22.dp))
             Spacer(modifier = Modifier.width(10.dp))
+
             if (isPassword) {
                 BasicTextField(
                     value = value,
                     onValueChange = onValueChange,
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done
-                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { /* Hide keyboard */ }),
                     visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),

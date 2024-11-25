@@ -56,6 +56,5 @@
         <activity android:name=".Administrador.NotificacionesActivity" />
         <activity android:name=".Administrador.RedactarActivity" />
         <activity android:name=".Administrador.Email" />
-
     </application>
 </manifest>
