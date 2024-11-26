@@ -31,3 +31,4 @@ fun AppNavigation() {
 //        composable("configuracion") { ConfiguracionScreen(navController = navController) }
 //    }
 }
+

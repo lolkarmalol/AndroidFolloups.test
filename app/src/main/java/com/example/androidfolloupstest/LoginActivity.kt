@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.test.core.app.ApplicationProvider
 import com.example.androidfolloupstest.network.ApiClient
 import com.example.androidfolloupstest.network.LoginRequest
+import com.example.androidfolloupstest.network.saveAuthToken
 import com.example.androidfolloupstest.ui.theme.GreenTheme
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -123,6 +124,8 @@ fun LoginScreen(paddingValues: PaddingValues) {
                                 val token = response.body()?.token
                                 token?.let { saveAuthToken(ApplicationProvider.getApplicationContext(), it) }
                                 isLoading = false
+                                // Aquí deberías redirigir a la pantalla según el rol del usuario
+                                redirectToHome(response.body()?.role)
                             } else {
                                 errorMessage = "Credenciales incorrectas"
                                 isLoading = false
@@ -219,3 +222,25 @@ fun InputField(
         }
     }
 }
+
+fun redirectToHome(navController: NavController, role: String?) {
+    when (role) {
+        "superadmin" -> {
+            // Navegar a la pantalla de Superadmin
+            navController.navigate("HomeSuperAdmin")
+        }
+        "admin" -> {
+            // Navegar a la pantalla de Admin
+            navController.navigate("MainActivity")
+        }
+        "trainer" -> {
+            // Navegar a la pantalla de Trainer
+            navController.navigate("Trainer_Lista_aprendiz")
+        }
+        "apprentice" -> {
+            // Navegar a la pantalla de Apprentice
+            navController.navigate("Apprentice_home")
+        }
+    }
+}
+
