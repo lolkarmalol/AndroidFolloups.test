@@ -91,67 +91,67 @@ fun HomeScreen(navController: NavHostController) {
 
             ) {
 
-            Text(
-                text = "Dayana",
-                modifier = Modifier
-                    .background(Color(0xFFFFFFFF))
-                    .shadow(4.dp, RoundedCornerShape(20.dp))
-                    .padding(10 .dp)
-                    .clickable { expanded = true },
+                Text(
+                    text = "Dayana",
+                    modifier = Modifier
+                        .background(Color(0xFFFFFFFF))
+                        .shadow(4.dp, RoundedCornerShape(20.dp))
+                        .padding(10 .dp)
+                        .clickable { expanded = true },
 
 
 
-            // Hacemos que el texto sea clickable para mostrar el menú
-            )
+                    // Hacemos que el texto sea clickable para mostrar el menú
+                )
 
 // Menú desplegable
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
 
 
-            ) {
-                // Información del usuario
-                Row(modifier = Modifier.padding(bottom = 12.dp)) {
-                    Column {
-                        Text(
-                            text = "Dayana Cantero",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp
-                        )
-                        Text(
-                            text = "Aprendiz",
-                            fontSize = 14.sp,
-                            color = Color.Gray,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
+                    ) {
+                    // Información del usuario
+                    Row(modifier = Modifier.padding(bottom = 12.dp)) {
+                        Column {
+                            Text(
+                                text = "Dayana Cantero",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                            Text(
+                                text = "Aprendiz",
+                                fontSize = 14.sp,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                    }
+                    DropdownMenuItem(onClick = {
+                        expanded = false
+                        navController.navigate("perfil") // Navegar a la pantalla de perfil
+
+                    }) {
+                        Text("Ver perfil")
+                    }
+
+                    DropdownMenuItem(onClick = {
+                        expanded = false
+                        // Navegar a la pantalla de configuración u otro lugar
+                        navController.navigate("configuracion")
+                    }) {
+                        Text("Configuración")
+                    }
+
+                    DropdownMenuItem(onClick = {
+                        expanded = false
+                        // Implementar la acción de cerrar sesión
+                    }) {
+                        Text("Cerrar sesión")
                     }
                 }
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    navController.navigate("perfil") // Navegar a la pantalla de perfil
 
-                }) {
-                    Text("Ver perfil")
-                }
-
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    // Navegar a la pantalla de configuración u otro lugar
-                    navController.navigate("configuracion")
-                }) {
-                    Text("Configuración")
-                }
-
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    // Implementar la acción de cerrar sesión
-                }) {
-                    Text("Cerrar sesión")
-                }
             }
-
-        }
 
         }
         // Segundo LinearLayout que aparecerá debajo del primero
