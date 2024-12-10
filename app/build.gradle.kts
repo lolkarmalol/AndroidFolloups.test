@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.androidx.foundation.layout.android)
 
     // Testing
     testImplementation(libs.junit)

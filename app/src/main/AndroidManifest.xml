@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.androidfolloupstest">
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,31 +24,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
 
-        <!--Superadmin-->
+        <!-- LoginActivity -->
+        <activity android:name="com.example.androidfollowuptest.LoginActivity" />
+
+        <!-- Otras actividades tradicionales aquí -->
         <activity android:name=".Superadmin.SuperAdmin_AdministradoresActivity" />
-        <activity android:name=".Superadmin.SuperAdmin_InstructorActivity"/>
-        <activity android:name=".Superadmin.SuperAdmin_ApprenticeActivity"/>
-        <activity android:name=".Superadmin.SuperAdmin_Notificaciones"/>
-        <activity android:name=".Superadmin.SuperAdmin_Perfil_Aprendiz"/>
-        <activity android:name=".Superadmin.SuperAdmin_Perfil_Instructor"/>
-        <activity android:name=".Superadmin.SuperAdmin_Perfil_Administradores"/>
-        <activity android:name=".Superadmin.SuperAdmin_Configuraciones"/>
-        <activity android:name=".Superadmin.SuperAdmin_Perfil_SuperAdmin"/>
-        <activity android:name=".Superadmin.SuperAdmin_Redactar"/>
-    <activity android:name=".Superadmin.HomeSuperAdmin"/>
-        <!--Adminitrador-->
-        <activity
-            android:name=".Administrador.InstructorActivity"
-            android:exported="true" />
-        <activity
-            android:name=".Administrador.ApprenticeActivity"
-            android:exported="true" />
+        <activity android:name=".Superadmin.SuperAdmin_InstructorActivity" />
+        <activity android:name=".Superadmin.SuperAdmin_ApprenticeActivity" />
+        <activity android:name=".Superadmin.SuperAdmin_Notificaciones" />
+        <activity android:name=".Superadmin.SuperAdmin_Perfil_Aprendiz" />
+        <activity android:name=".Superadmin.SuperAdmin_Perfil_Instructor" />
+        <activity android:name=".Superadmin.SuperAdmin_Perfil_Administradores" />
+        <activity android:name=".Superadmin.SuperAdmin_Configuraciones" />
+        <activity android:name=".Superadmin.SuperAdmin_Perfil_SuperAdmin" />
+        <activity android:name=".Superadmin.SuperAdmin_Redactar" />
+        <activity android:name=".Superadmin.HomeSuperAdmin" />
 
-        <activity
-            android:name=".Administrador.TemplateActivity"
-            android:exported="true" />
+        <!-- Admin -->
+        <activity android:name=".Administrador.InstructorActivity" android:exported="true" />
+        <activity android:name=".Administrador.ApprenticeActivity" android:exported="true" />
+        <activity android:name=".Administrador.TemplateActivity" android:exported="true" />
         <activity android:name=".Administrador.InstructorPerfilActivity" />
         <activity android:name=".Administrador.AgregarInstructorActivity" />
         <activity android:name=".Administrador.AprendizPerfilActivity" />
@@ -56,11 +53,10 @@
         <activity android:name=".Administrador.NotificacionesActivity" />
         <activity android:name=".Administrador.RedactarActivity" />
         <activity android:name=".Administrador.Email" />
-        <activity android:name=".Administrador.HomeAdministrador"/>
-        
-        
-<!--        trainer-->
+        <activity android:name=".Administrador.HomeAdministrador" />
+
+        <!-- Trainer -->
         <activity android:name=".Trainer.Trainer_Perfil_Aprendiz"/>
-        
+
     </application>
 </manifest>
