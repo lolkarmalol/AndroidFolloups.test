@@ -9,7 +9,6 @@ data class User(
     val phone: String,
     val address: String
 )
-
 // Lista de usuarios locales
 val users = listOf(
     User(
@@ -31,3 +30,4 @@ val users = listOf(
         address = "Carrera 45, Medellín"
     )
 )
+

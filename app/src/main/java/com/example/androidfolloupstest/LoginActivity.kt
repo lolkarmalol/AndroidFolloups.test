@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
+import com.example.androidfolloupstest.HomeApprenticeScreen
 import com.example.androidfolloupstest.R
 import com.example.androidfolloupstest.ui.theme.GreenTheme
 import com.example.androidfollowuptest.model.User
@@ -77,7 +78,9 @@ class LoginActivity : ComponentActivity() {
                         val lastName = backStackEntry.arguments?.getString("lastName") ?: ""
                         val phone = backStackEntry.arguments?.getString("phone") ?: ""
                         val address = backStackEntry.arguments?.getString("address") ?: ""
-                        ApprenticeHomeScreen(firstName, lastName, phone, address)
+
+                        // Pasar los parámetros correctamente a la pantalla HomeApprenticeScreen
+                        HomeApprenticeScreen(navController, firstName, lastName, phone, address)
                     }
                 }
             }
